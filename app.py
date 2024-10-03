@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from models import db, Movie, Actor
 from functools import wraps
-
+print("app")
 app = Flask(__name__)
 setup_db(app)
 
