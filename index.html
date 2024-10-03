@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie and Actor Database</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .actor, .movie {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Movie and Actor Database</h1>
+        <h2>Actors</h2>
+        <div id="actors"></div>
+
+        <h2>Movies</h2>
+        <div id="movies"></div>
+    </div>
+
+    <script>
+        async function fetchActors() {
+            const response = await fetch('/actors');
+            const actors = await response.json();
+            const actorsDiv = document.getElementById('actors');
+            actorsDiv.innerHTML = '';
+            actors.forEach(actor => {
+                const actorDiv = document.createElement('div');
+                actorDiv.className = 'actor';
+                actorDiv.textContent = actor;
+                actorsDiv.appendChild(actorDiv);
+            });
+        }
+
+        async function fetchMovies() {
+            const response = await fetch('/movies');
+            const movies = await response.json();
+            const moviesDiv = document.getElementById('movies');
+            moviesDiv.innerHTML = '';
+            movies.forEach(movie => {
+                const movieDiv = document.createElement('div');
+                movieDiv.className = 'movie';
+                movieDiv.textContent = movie;
+                moviesDiv.appendChild(movieDiv);
+            });
+        }
+
+        // Fetch data when the page loads
+        window.onload = () => {
+            fetchActors();
+            fetchMovies();
+        };
+    </script>
+</body>
+</html>
