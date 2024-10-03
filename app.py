@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from models import db, Movie, Actor
 from functools import wraps
@@ -9,7 +9,6 @@ print("app")
 app = Flask(__name__)
 setup_db(app)
 print("appsetup")
-
 
 # Initialize JWT Manager
 jwt = JWTManager(app)
@@ -29,7 +28,12 @@ def requires_auth(permission=''):
         return decorated_function
     return decorator
 
-# Define your routes here
+# Route to render the index page
+@app.route('/')
+def index():
+    return render_template('index.html')  # Ensure index.html is in the templates folder
+
+# Define your API routes here
 @app.route('/actors', methods=['GET'])
 def get_actors():
     actors = Actor.query.all()
