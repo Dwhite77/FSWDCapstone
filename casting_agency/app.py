@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Database configuration and initialization
 app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri'  # Replace with your actual database URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Change this to a random secret key
+app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY'] # Change this to a random secret key
 db.init_app(app)
 
 # Initialize JWT Manager
