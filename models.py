@@ -1,10 +1,17 @@
+import os
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, String
+
+print("testing....")
+
+database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
 
 
+
 def setup_db(app, database_path=database_path):
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.Environ[DATABASE_URL]
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config['JWT_SECRET_KEY'] = os.environ[JWT_SECRET_KEY] # Change this to a random secret key
     db.app = app
