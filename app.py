@@ -3,7 +3,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from models import db, Movie, Actor
 from functools import wraps
 
-from FSWDCapstone.models import setup_db
+from models import setup_db
 
 print("app")
 app = Flask(__name__)
