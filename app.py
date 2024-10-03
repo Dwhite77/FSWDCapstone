@@ -4,12 +4,8 @@ from models import db, Movie, Actor
 from functools import wraps
 
 app = Flask(__name__)
+setup_db(app)
 
-# Database configuration and initialization
-app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri'  # Replace with your actual database URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY'] # Change this to a random secret key
-db.init_app(app)
 
 # Initialize JWT Manager
 jwt = JWTManager(app)
