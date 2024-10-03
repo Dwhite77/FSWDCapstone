@@ -1,13 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
-from FSWDCapstone.models import db, Movie, Actor
+from models import db, Movie, Actor
 from functools import wraps
 
-from FSWDCapstone.models import setup_db
+from models import setup_db
 
 print("app")
 app = Flask(__name__)
 setup_db(app)
+print("appsetup")
 
 
 # Initialize JWT Manager
