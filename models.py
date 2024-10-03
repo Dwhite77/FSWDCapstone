@@ -5,11 +5,11 @@ from sqlalchemy import Column, String
 print("testing....")
 
 database_path = os.environ['DATABASE_URL']
-
+print("dbpath")
 db = SQLAlchemy()
+print("db = sql done")
 
-
-
+"""
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -17,8 +17,24 @@ def setup_db(app, database_path=database_path):
     db.app = app
     db.init_app(app)
     db.create_all()
+"""
+def setup_db(app, database_path):
+    # Set the database URI for SQLAlchemy
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    
+    # Ensure JWT_SECRET_KEY is accessed from environment variables correctly
+    app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'your_random_secret_key')  # Provide a default if not set
+    
+    # Initialize the app with the database
+    db.app = app
+    db.init_app(app)
+    
+    # Create all tables
+    with app.app_context():
+        db.create_all()
 
-
+print("post setup_db")
 
 class Movie(db.Model):
     __tablename__ = 'movies'
