@@ -8,6 +8,7 @@ from models import setup_db
 print("app")
 app = Flask(__name__)
 setup_db(app)
+print("appsetup")
 
 
 # Initialize JWT Manager
