@@ -2,6 +2,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
+def setup_db(app, database_path=database_path):
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.Environ[DATABASE_URL]
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config['JWT_SECRET_KEY'] = os.environ[JWT_SECRET_KEY] # Change this to a random secret key
+    db.app = app
+    db.init_app(app)
+    db.create_all()
+
+
+
 class Movie(db.Model):
     __tablename__ = 'movies'
 
