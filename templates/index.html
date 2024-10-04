@@ -22,11 +22,27 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Movie and Actor Database</h1>
+        <nav>
+            <a href="/add_actor">Add New Actor</a>
+            <a href="/add_movie">Add New Movie</a>
+        </nav>
         <h2>Actors</h2>
         <div id="actors"></div>
 

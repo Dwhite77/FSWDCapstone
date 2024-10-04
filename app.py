@@ -107,6 +107,32 @@ def update_movie(id):
         return jsonify({'message': 'Movie updated'}), 200
     return jsonify({'message': 'Movie not found'}), 404
 
+
+
+# Route to render the add actor page
+@app.route('/add_actor', methods=['GET', 'POST'])
+@requires_auth('add:actor')  # Protect this route
+def add_actor_page():
+    if request.method == 'POST':
+        data = request.form
+        new_actor = Actor(name=data['name'], age=data['age'], gender=data['gender'])
+        db.session.add(new_actor)
+        db.session.commit()
+        return jsonify({'message': 'Actor added'}), 201
+    return render_template('add_actor.html')  # Ensure add_actor.html is in the templates folder
+
+# Route to render the add movie page
+@app.route('/add_movie', methods=['GET', 'POST'])
+@requires_auth('add:movie')  # Protect this route
+def add_movie_page():
+    if request.method == 'POST':
+        data = request.form
+        new_movie = Movie(title=data['title'], release_date=data['release_date'])
+        db.session.add(new_movie)
+        db.session.commit()
+        return jsonify({'message': 'Movie added'}), 201
+    return render_template('add_movie.html')  # Ensure add_movie.html is in the templates folder
+
 # Start the application
 if __name__ == '__main__':
     app.run(debug=True)
