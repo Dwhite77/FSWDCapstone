@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request, render_template, redirect, session, url_for
-from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from models import db, Movie, Actor, setup_db
 from flask_cors import CORS
 import os
@@ -11,7 +10,7 @@ app = Flask(__name__)
 setup_db(app)
 print("appsetup")
 
-# Initialize JWT Manager
+
 CORS(app)
 
 
@@ -44,7 +43,7 @@ def get_movies():
     return jsonify([movie.title for movie in movies])
 
 @app.route('/actors', methods=['POST'])
-@requires_auth('add:actor')  # Protect this route
+#@requires_auth('add:actor')  # Protect this route
 def add_actor(payload):
     print(payload)
     data = request.get_json()
@@ -107,28 +106,6 @@ def update_movie(payload,id):
         return jsonify({'message': 'Movie updated'}), 200
     return jsonify({'message': 'Movie not found'}), 404
 
-
-"""
-# Route to render the add actor page
-@app.route('/add_actor', methods=['GET'])
-def add_actor_page():
-    return render_template('add_actor.html')  # Ensure add_actor.html is in the templates folder
-
-# Route to render the add movie page
-@app.route('/add_movie', methods=['GET'])
-def add_movie_page():
-    return render_template('add_movie.html')  # Ensure add_movie.html is in the templates folder
-"""
-@app.route('/callback')
-def callback():
-    # Here you would typically handle the token returned by Auth0
-    # For example, you might store it in the session
-    token = request.args.get('access_token')
-    session['jwt_token'] = token  # Store the token in the session
-    return redirect(url_for('index'))  # Redirect to the home page or another page
-
-
-app.secret_key = os.environ['JWT_SECRET_KEY']  # Make sure to set this in your .env file
 
 @app.route('/login')
 def login():
