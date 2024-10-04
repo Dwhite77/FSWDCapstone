@@ -33,6 +33,9 @@ def setup_db(app):
     # Create all tables
     with app.app_context():
         db.create_all()
+print(os.environ.get('JWT_SECRET_KEY'))
+print(os.environ['JWT_SECRET_KEY'])
+print(database_path)
 
 print("post setup_db")
 
