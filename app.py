@@ -144,7 +144,7 @@ def callback():
 
 
 
-app.secret_key = os.environ['JWT_SECRET']  # Make sure to set this in your .env file
+app.secret_key = os.environ['JWT_SECRET_KEY']  # Make sure to set this in your .env file
 
 @app.route('/login')
 def login():
