@@ -9,7 +9,7 @@ from urllib.error import HTTPError
 
 AUTH0_DOMAIN = os.environ["AUTH0_DOMAIN"]
 ALGORITHMS = os.environ.get("AUTH0_ALGORITHM").split(",")
-API_AUDIENCE = os.environ["API_AUDIENCE"]
+API_IDENTIFIER = os.environ["API_IDENTIFIER"]
 
 ## AuthError Exception
 class AuthError(Exception):
@@ -112,7 +112,7 @@ def verify_decode_jwt(token):
                 token,
                 rsa_key,
                 algorithms=ALGORITHMS,
-                audience=API_AUDIENCE,
+                audience=API_IDENTIFIER,
                 issuer=f'https://{AUTH0_DOMAIN}/'
             )
             return payload
