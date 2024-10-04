@@ -3,6 +3,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from models import db, Movie, Actor, setup_db
 from functools import wraps
 import os
+from auth.auth import requires_auth
 
 
 print("app")
@@ -13,21 +14,6 @@ print("appsetup")
 # Initialize JWT Manager
 jwt = JWTManager(app)
 
-# Role-based access control decorator
-def requires_auth(permission=''):
-    def decorator(f):
-        @wraps(f)
-        @jwt_required()  # Protect the route with JWT
-        def decorated_function(*args, **kwargs):
-            # Get the identity of the current user
-            current_user = get_jwt_identity()
-            # Check if the user has the required permission
-            print(current_user['permissions'])
-            if permission not in current_user['permissions']:
-                return jsonify({'message': 'Permission denied'}), 403
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
 
 # Route to render the index page
 @app.route('/')
@@ -45,39 +31,6 @@ def get_movies():
     movies = Movie.query.all()
     return jsonify([movie.title for movie in movies])
 
-#-------------------------------------------------------
-
-@app.route('/actors', methods=['POST'])
-@requires_auth('add:actor')  # Protect this route
-def add_actor():
-    # Get the JWT from the request
-    token = request.headers.get('Authorization', None)
-
-    if token is None:
-        return jsonify({'message': 'Missing Authorization Header'}), 401
-
-    # Decode the token to get the user's roles
-    try:
-        payload = jwt.decode(token.split()[1],
-                             options={"verify_signature": False})  # Adjust this based on your JWT verification setup
-        roles = payload.get('roles', [])
-    except Exception as e:
-        return jsonify({'message': 'Invalid token'}), 401
-
-    # Check if the user has the 'Director' role
-    if 'Director' not in roles:
-        return jsonify({'message': 'Access forbidden: You do not have the required role'}), 403
-
-    # If the user is authorized, proceed to add the actor
-    data = request.get_json()
-    new_actor = Actor(name=data['name'], age=data['age'], gender=data['gender'])
-    db.session.add(new_actor)
-    db.session.commit()
-    return jsonify({'message': 'Actor added'}), 201
-
-#--------------------------------------------------------
-
-"""
 @app.route('/actors', methods=['POST'])
 @requires_auth('add:actor')  # Protect this route
 def add_actor():
@@ -86,7 +39,7 @@ def add_actor():
     db.session.add(new_actor)
     db.session.commit()
     return jsonify({'message': 'Actor added'}), 201
-"""
+
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route
 def add_movie():
