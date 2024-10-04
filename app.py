@@ -142,13 +142,11 @@ def callback():
     return redirect(url_for('index'))  # Redirect to the home page or another page
 
 
-
-
 app.secret_key = os.environ['JWT_SECRET_KEY']  # Make sure to set this in your .env file
 
 @app.route('/login')
 def login():
-    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('callback', _external=True)}")
+    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?audience={os.environ['API_IDENTIFIER']}&response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('callback', _external=True)}")
 
 
 # Start the application
