@@ -46,6 +46,9 @@ def get_movies():
 #@requires_auth('add:actor')  # Protect this route
 def add_actor():
     data = request.get_json()
+    print(data.get("name"))
+    print(data.get("age"))
+    print(data.get("gender"))
     new_actor = Actor(name=data['name'], age=data['age'], gender=data['gender'])
     db.session.add(new_actor)
     db.session.commit()
