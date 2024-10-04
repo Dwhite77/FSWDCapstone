@@ -33,7 +33,7 @@ def get_movies():
 
 @app.route('/actors', methods=['POST'])
 @requires_auth('add:actor')  # Protect this route
-def add_actor():
+def add_actor(payload):
     data = request.get_json()
     new_actor = Actor(name=data['name'], age=data['age'], gender=data['gender'])
     db.session.add(new_actor)
@@ -42,7 +42,7 @@ def add_actor():
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route
-def add_movie():
+def add_movie(payload):
     data = request.get_json()
     new_movie = Movie(title=data['title'], release_date=data['release_date'])
     db.session.add(new_movie)
@@ -51,7 +51,7 @@ def add_movie():
 
 @app.route('/actors/<int:id>', methods=['DELETE'])
 @requires_auth('delete:actor')  # Protect this route
-def delete_actor(id):
+def delete_actor(payload,id):
     actor = Actor.query.get(id)
     if actor:
         db.session.delete(actor)
@@ -61,7 +61,7 @@ def delete_actor(id):
 
 @app.route('/movies/<int:id>', methods=['DELETE'])
 @requires_auth('delete:movie')  # Protect this route
-def delete_movie(id):
+def delete_movie(payload,id):
     movie = Movie.query.get(id)
     if movie:
         db.session.delete(movie)
@@ -71,7 +71,7 @@ def delete_movie(id):
 
 @app.route('/actors/<int:id>', methods=['PATCH'])
 @requires_auth('update:actor')  # Protect this route
-def update_actor(id):
+def update_actor(payload,id):
     actor = Actor.query.get(id)
     if actor:
         data = request.get_json()
@@ -84,7 +84,7 @@ def update_actor(id):
 
 @app.route('/movies/<int:id>', methods=['PATCH'])
 @requires_auth('update:movie')  # Protect this route
-def update_movie(id):
+def update_movie(payload,id):
     movie = Movie.query.get(id)
     if movie:
         data = request.get_json()
