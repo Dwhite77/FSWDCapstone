@@ -1,9 +1,8 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, session, url_for
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
-from models import db, Movie, Actor
+from models import db, Movie, Actor, setup_db
 from functools import wraps
 
-from models import setup_db
 
 print("app")
 app = Flask(__name__)
@@ -141,10 +140,9 @@ def callback():
     session['jwt_token'] = token  # Store the token in the session
     return redirect(url_for('index'))  # Redirect to the home page or another page
 
-from flask import Flask, redirect, request, session, url_for
-import os
 
-app = Flask(__name__)
+
+
 app.secret_key = os.environ['JWT_SECRET']  # Make sure to set this in your .env file
 
 @app.route('/login')
