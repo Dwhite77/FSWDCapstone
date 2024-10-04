@@ -66,7 +66,8 @@ def add_actor():
     except Exception as e:
         print(f"Error making actor: {e}")
         abort(422)
-    
+
+
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route

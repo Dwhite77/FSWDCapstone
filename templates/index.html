@@ -39,73 +39,37 @@
 <body>
     <div class="container">
         <h1>Movie and Actor Database</h1>
-       <!-- <nav>
-            <a href="/login">Login</a>
-            <a href="/add_actor">Add New Actor</a>
-            <a href="/add_movie">Add New Movie</a>
-        </nav>-->
         <h2>Actors</h2>
-        <div id="actors"></div>
+        <div id="actors">
+            <!-- Actors will be populated here by the server -->
+        </div>
 
         <h2>Movies</h2>
-        <div id="movies"></div>
-
+        <div id="movies">
+            <!-- Movies will be populated here by the server -->
+        </div>
     </div>
 
     <div>
         <h1>Add New Movie</h1>
-            <form action="/movies" method="POST">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required><br>
-                <label for="release_date">Release Date:</label>
-                <input type="date" id="release_date" name="release_date" required><br>
-                <button type="submit">Add Movie</button>
-            </form>
+        <form action="/movies" method="POST">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required><br>
+            <label for="release_date">Release Date:</label>
+            <input type="date" id="release_date" name="release_date" required><br>
+            <button type="submit">Add Movie</button>
+        </form>
 
         <h1>Add New Actor</h1>
-            <form action="/actors" method="POST">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required><br>
-                <label for="age">Age:</label>
-                <input type="number" id="age" name="age" required><br>
-                <label for="gender">Gender:</label>
-                <input type="text" id="gender" name="gender" required><br>
-                <button type="submit">Add Actor</button>
-            </form>
+        <form action="/actors" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required><br>
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender" required><br>
+            <button type="submit">Add Actor</button>
+        </form>
     </div>
-
-    <script>
-        async function fetchActors() {
-            const response = await fetch('/actors');
-            const actors = await response.json();
-            const actorsDiv = document.getElementById('actors');
-            actorsDiv.innerHTML = '';
-            actors.forEach(actor => {
-                const actorDiv = document.createElement('div');
-                actorDiv.className = 'actor';
-                actorDiv.textContent = actor;
-                actorsDiv.appendChild(actorDiv);
-            });
-        }
-
-        async function fetchMovies() {
-            const response = await fetch('/movies');
-            const movies = await response.json();
-            const moviesDiv = document.getElementById('movies');
-            moviesDiv.innerHTML = '';
-            movies.forEach(movie => {
-                const movieDiv = document.createElement('div');
-                movieDiv.className = 'movie';
-                movieDiv.textContent = movie;
-                moviesDiv.appendChild(movieDiv);
-            });
-        }
-
-        // Fetch data when the page loads
-        window.onload = () => {
-            fetchActors();
-            fetchMovies();
-        };
-    </script>
 </body>
 </html>
