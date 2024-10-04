@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect, session, url_for
+from flask import Flask, jsonify, request, render_template, redirect, session, url_for, abort
 from models import db, Movie, Actor, setup_db
 from flask_cors import CORS
 import os
@@ -45,14 +45,28 @@ def get_movies():
 @app.route('/actors', methods=['POST'])
 #@requires_auth('add:actor')  # Protect this route
 def add_actor():
-    data = request.get_json()
-    print(data.get("name"))
-    print(data.get("age"))
-    print(data.get("gender"))
-    new_actor = Actor(name=data['name'], age=data['age'], gender=data['gender'])
-    db.session.add(new_actor)
-    db.session.commit()
-    return jsonify({'message': 'Actor added'}), 201
+    body = request.get_json()
+    if not body:
+        abort(400)
+
+    name = body.get("name")
+    age = body.get("age")
+    gender = body.get("gender")
+
+    if not name or not age or not gender:
+        abort(400)
+
+    try:
+        actor = Actor(name=name, age=age, gender=gender)
+        actor.insert()
+        return jsonify({
+            "success": True,
+            "actors": [actor.long()]
+        }), 200
+    except Exception as e:
+        print(f"Error making actor: {e}")
+        abort(422)
+    
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route

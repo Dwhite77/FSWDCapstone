@@ -1,6 +1,7 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Integer, Date
+import json
 
 print("testing....")
 
@@ -33,6 +34,7 @@ def setup_db(app):
     # Create all tables
     with app.app_context():
         db.create_all()
+
 print(os.environ.get('JWT_SECRET_KEY'))
 print(os.environ['JWT_SECRET_KEY'])
 print(database_path)
@@ -40,11 +42,29 @@ print(database_path)
 print("post setup_db")
 
 class Movie(db.Model):
-    __tablename__ = 'movies'
 
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    release_date = db.Column(db.Date, nullable=False)
+    id = Column(Integer, primary_key=True)
+    title = Column(String(100), nullable=False)
+    release_date = Column(Date, nullable=False)
+
+
+    def long(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date
+        }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
 
     def __init__(self, title, release_date):
         self.title = title
@@ -54,12 +74,30 @@ class Movie(db.Model):
         return f'<Movie {self.title}>'
 
 class Actor(db.Model):
-    __tablename__ = 'actors'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    age = Column(Integer, nullable=False)
+    gender = Column(String(10), nullable=False)
+
+    def long(self):
+        return {
+            'id': self.id,
+            'name': self.title,
+            'age': self.age,
+            'gender': self.gender
+        }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
 
     def __init__(self, name, age, gender):
         self.name = name
