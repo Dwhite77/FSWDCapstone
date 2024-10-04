@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, redirect, session, url_for
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from models import db, Movie, Actor, setup_db
-from functools import wraps
+from flask_cors import CORS
 import os
 from auth.auth import requires_auth
 
@@ -12,7 +12,19 @@ setup_db(app)
 print("appsetup")
 
 # Initialize JWT Manager
-jwt = JWTManager(app)
+CORS(app)
+
+
+# CORS Headers
+@app.after_request
+def after_request(response):
+    response.headers.add(
+        "Access-Control-Allow-Headers", "Content-Type,Authorization,true"
+    )
+    response.headers.add(
+        "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
+    )
+    return response
 
 
 # Route to render the index page
