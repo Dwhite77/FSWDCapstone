@@ -133,6 +133,25 @@ def add_movie_page():
         return jsonify({'message': 'Movie added'}), 201
     return render_template('add_movie.html')  # Ensure add_movie.html is in the templates folder
 
+@app.route('/callback')
+def callback():
+    # Here you would typically handle the token returned by Auth0
+    # For example, you might store it in the session
+    token = request.args.get('access_token')
+    session['jwt_token'] = token  # Store the token in the session
+    return redirect(url_for('index'))  # Redirect to the home page or another page
+
+from flask import Flask, redirect, request, session, url_for
+import os
+
+app = Flask(__name__)
+app.secret_key = os.environ['JWT_SECRET']  # Make sure to set this in your .env file
+
+@app.route('/login')
+def login():
+    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('callback', _external=True)}")
+
+
 # Start the application
 if __name__ == '__main__':
     app.run(debug=True)
