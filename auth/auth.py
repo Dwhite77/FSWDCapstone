@@ -21,7 +21,7 @@ class AuthError(Exception):
 def get_token_auth_header():
     # Attempt to get the header from the request
     auth = request.headers.get('Authorization', None)
-
+    print(auth)
 
     if not auth:
         raise AuthError({
@@ -144,8 +144,8 @@ def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            token = get_token_auth_header()
-            payload = verify_decode_jwt(token)
+            jwt = get_token_auth_header()
+            payload = verify_decode_jwt(jwt)
             check_permissions(permission, payload)
             return f( *args, payload=payload, **kwargs)
 

@@ -108,7 +108,7 @@ def update_movie(payload,id):
     return jsonify({'message': 'Movie not found'}), 404
 
 
-
+"""
 # Route to render the add actor page
 @app.route('/add_actor', methods=['GET'])
 def add_actor_page():
@@ -118,7 +118,7 @@ def add_actor_page():
 @app.route('/add_movie', methods=['GET'])
 def add_movie_page():
     return render_template('add_movie.html')  # Ensure add_movie.html is in the templates folder
-
+"""
 @app.route('/callback')
 def callback():
     # Here you would typically handle the token returned by Auth0
