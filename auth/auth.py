@@ -21,6 +21,8 @@ class AuthError(Exception):
 def get_token_auth_header():
     # Attempt to get the header from the request
     auth = request.headers.get('Authorization', None)
+
+
     if not auth:
         raise AuthError({
             'code': 'authorization_header_missing',
