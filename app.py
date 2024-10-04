@@ -109,7 +109,7 @@ def update_movie(payload,id):
 
 @app.route('/login')
 def login():
-    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?audience={os.environ['API_IDENTIFIER']}&response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('callback', _external=True)}")
+    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?audience={os.environ['API_IDENTIFIER']}&response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('/', _external=True)}")
 
 
 # Start the application
