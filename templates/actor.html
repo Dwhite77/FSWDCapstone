@@ -31,7 +31,7 @@
                     </td>
                     <td>
                         <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
-                            <input type="hidden" value="PATCH">  <!-- Indicate the method -->
+                            <input type="hidden" value="POST">
                             <button type="submit">Update</button>
                         </form>
                         <form action="delete-actor/{{ actor.id }}" method="POST" style="display:inline;">

@@ -18,15 +18,12 @@
                         <input type="text" id="title-{{ movie.id }}" value="{{ movie.title }}" required>
                     </td>
                     <td>
-                        <input type="number" id="release_year-{{ movie.id }}" value="{{ movie.release_year }}" required>
-                    </td>
-                    <td>
-                        <input type="text" id="director-{{ movie.id }}" value="{{ movie.director }}" required>
+                        <input type="date" id="release_year-{{ movie.id }}" value="{{ movie.release_year }}" required>
                     </td>
                     <td>
                         <form action="/movies/{{ movie.id }}" method="POST" style="display:inline;">
-                            <input type="hidden" name="_method" value="POST">  <!-- Indicate the method -->
-                            <button type="button" onclick="updateMovie({{ movie.id }})">Update</button>
+                            <input type="hidden" value="POST">  <!-- Indicate the method -->
+                            <button type="button">Update</button>
                         </form>
                         <form action="/delete-movie/{{ movie.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
