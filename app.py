@@ -24,6 +24,7 @@ def after_request(response):
     response.headers.add(
         "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
     )
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 
@@ -131,7 +132,7 @@ def add_movie(payload):
     title = request.form.get("title")
     release_date = request.form.get("release_date")
 
-    if not title or release_date:
+    if not title or not release_date:
          abort(400)
 
     try:
@@ -150,6 +151,8 @@ def add_movie(payload):
 @requires_auth('delete:actor')  # Protect this route
 def delete_actor(actor_id):
     actor = Actor.query.get(actor_id)
+    if not actor:
+        abort(404)
     if actor:
         db.session.delete(actor)
         db.session.commit()
@@ -160,6 +163,8 @@ def delete_actor(actor_id):
 @requires_auth('delete:movie')  # Protect this route
 def delete_movie(movie_id):
     movie = Movie.query.get(movie_id)
+    if not movie:
+        abort(404)
     if movie:
         db.session.delete(movie)
         db.session.commit()
