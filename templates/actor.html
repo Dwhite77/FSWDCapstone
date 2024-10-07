@@ -30,11 +30,11 @@
                         </form>
                     </td>
                     <td>
-                        <form action="/actors/{{ actor.id }}" method="PATCH" style="display:inline;">
+                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
                             <input type="hidden" value="PATCH">  <!-- Indicate the method -->
                             <button type="submit">Update</button>
                         </form>
-                        <form action="/delete-actor/{{ actor.id }}" method="DELETE" style="display:inline;">
+                        <form action="delete-actor/{{ actor.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
                     </td>

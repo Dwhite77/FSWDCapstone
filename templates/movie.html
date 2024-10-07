@@ -25,7 +25,7 @@
                     </td>
                     <td>
                         <form action="/movies/{{ movie.id }}" method="POST" style="display:inline;">
-                            <input type="hidden" name="_method" value="PATCH">  <!-- Indicate the method -->
+                            <input type="hidden" name="_method" value="POST">  <!-- Indicate the method -->
                             <button type="button" onclick="updateMovie({{ movie.id }})">Update</button>
                         </form>
                         <form action="/delete-movie/{{ movie.id }}" method="POST" style="display:inline;">
