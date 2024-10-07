@@ -31,10 +31,9 @@
                     </td>
                     <td>
                         <form action="/updateactors/{{ actor.id }}" method="POST" style="display:inline;">
-                            <input type="hidden" value="POST">
                             <button type="submit">Update</button>
                         </form>
-                        <form action="delete-actor/{{ actor.id }}" method="POST" style="display:inline;">
+                        <form action="/delete-actor/{{ actor.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
                     </td>

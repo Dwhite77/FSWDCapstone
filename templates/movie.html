@@ -15,15 +15,14 @@
                 <tr>
                     <td>{{ movie.id }}</td>
                     <td>
-                        <input type="text" id="title-{{ movie.id }}" value="{{ movie.title }}" required>
+                        <span id="title-display-{{ movie.id }}">{{ movie.title }}</span>
                     </td>
                     <td>
-                        <input type="date" id="release_year-{{ movie.id }}" value="{{ movie.release_year }}" required>
+                        <span id="release_year-display-{{ movie.id }}">{{ movie.release_year }}</span>
                     </td>
                     <td>
                         <form action="/updatemovies/{{ movie.id }}" method="POST" style="display:inline;">
-                            <input type="hidden" value="POST">  <!-- Indicate the method -->
-                            <button type="button">Update</button>
+                            <button type="submit">Update</button>
                         </form>
                         <form action="/delete-movie/{{ movie.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
