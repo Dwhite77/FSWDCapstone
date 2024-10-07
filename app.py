@@ -45,7 +45,8 @@ def get_movies():
 
 @app.route('/actors', methods=['POST'])
 @requires_auth('add:actor')  # Protect this route
-def add_actor():
+def add_actor(payload):
+    print(payload)
     name = request.form.get("name")
     age = request.form.get("age")
     gender = request.form.get("gender")
