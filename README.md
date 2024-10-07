@@ -46,41 +46,54 @@ Use the client credentials to obtain a JWT token.
 Include the token in the Authorization header of your requests:
 Authorization: Bearer YOUR_JWT_TOKEN
 
-#API Endpoints
-##Actors
+# API Endpoints
 
-###GET /actors
+## Actors
 
+### GET /actors
 Retrieves a list of actors.
 
-###POST /actors
-
+### POST /actors
 Adds a new actor.
-Request Body:
+**Request Body:**
+
 {
   "name": "John Doe",
   "age": 30,
   "gender": "Male"
 }
 ###PATCH /actors/<actor_id>
+Updates an existing actor's information. Request Body:
 
-Updates an existing actor's information.
+{
+  "name": "John Doe",
+  "age": 30,
+  "gender": "Male"
+}
 ###DELETE /actors/<actor_id>
-
 Deletes an actor.
+
 ##Movies
 ###GET /movies
-
 Retrieves a list of movies.
+
 ###POST /movies
+Adds a new movie. Request Body:
 
-Adds a new movie.
+{
+  "title": "Inception",
+  "release_date": "2010-07-16"
+}
 ###PATCH /movies/<movie_id>
+Updates an existing movie's information. Request Body:
 
-Updates an existing movie's information.
+{
+  "title": "Inception",
+  "release_date": "2010-07-16"
+}
 ###DELETE /movies/<movie_id>
-
 Deletes a movie.
+
 
 ##Role-Based Access Control (RBAC)
 The API implements RBAC to restrict access based on user roles. The following roles are defined:
@@ -91,9 +104,6 @@ Producer: Can delete actors and movies.
 Testing
 To run the tests, use the following command:
 
-python -m unittest discover
-Test Cases
-The test suite includes tests for:
 
 Retrieving actors
 Adding actors
