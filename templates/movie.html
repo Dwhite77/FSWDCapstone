@@ -11,9 +11,11 @@
             <div id="movies">
                 {% for movie in movies %}
                     <div class="movie">
+                        <p>ID: {{ movie.id }}</p>
                         <p>Title: {{ movie.title }}</p>
                         <p>Release Year: {{ movie.release_year }}</p>
                         <p>Director: {{ movie.director }}</p>
+                        <p>-----------------------</p>
                     </div>
                 {% else %}
                     <p>No movies found.</p>

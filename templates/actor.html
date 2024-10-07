@@ -11,9 +11,11 @@
             <div id="actors">
                 {% for actor in actors %}
                     <div class="actor">
+                        <p>ID: {{ actor.id }}</p>
                         <p>Name: {{ actor.name }}</p>
                         <p>Age: {{ actor.age }}</p>
                         <p>Gender: {{ actor.gender }}</p>
+                        <p>-----------------------</p>
                     </div>
                 {% else %}
                     <p>No actors found.</p>
