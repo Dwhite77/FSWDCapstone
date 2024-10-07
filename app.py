@@ -43,15 +43,11 @@ def get_movies():
     return jsonify([movie.title for movie in movies])
 
 @app.route('/actors', methods=['POST'])
-#@requires_auth('add:actor')  # Protect this route
+# @requires_auth('add:actor')  # Protect this route
 def add_actor():
-    body = request.get_json()
-    if not body:
-        abort(400)
-
-    name = body.get("name")
-    age = body.get("age")
-    gender = body.get("gender")
+    name = request.form.get("name")
+    age = request.form.get("age")
+    gender = request.form.get("gender")
 
     if not name or not age or not gender:
         abort(400)
@@ -66,7 +62,6 @@ def add_actor():
     except Exception as e:
         print(f"Error making actor: {e}")
         abort(422)
-
 
 
 @app.route('/movies', methods=['POST'])
