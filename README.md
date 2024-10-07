@@ -28,14 +28,11 @@ Create a new database in your preferred SQL database management system.
 Update the database connection string in config.py.
 Set up environment variables for Auth0: Create a .env file and add the following:
 
-AUTH0_DOMAIN='your-auth0-domain'
-API_IDENTIFIER='your-api-identifier'
-JWT_SECRET='your-jwt-secret'
-Running the Application
-To run the application, use the following command:
+AUTH0_DOMAIN='dev-n2b3c216vvhww5je.us.auth0.com'
+API_IDENTIFIER='Capstone'
+AUTH0_CLIENT_ID='jkplYa7wJNDYAkCB82RqdErnjRR7Naex'
+AUTH0_CLIENT_SECRET='QZWoaiHxC46zqOR_O3jYvt3Cw5kqJXXtdojr18NTafQqoakky5T9TYvDJP2j_ZhE'
 
-flask run
-The API will be available at http://127.0.0.1:5000.
 
 Authentication
 To access the API, you need to obtain a JWT token from Auth0. Follow these steps:
@@ -45,12 +42,15 @@ Create a new application and configure the callback URL.
 Use the client credentials to obtain a JWT token.
 Include the token in the Authorization header of your requests:
 Authorization: Bearer YOUR_JWT_TOKEN
-API Endpoints
-Actors
-GET /actors
+
+#API Endpoints
+##Actors
+
+###GET /actors
 
 Retrieves a list of actors.
-POST /actors
+
+###POST /actors
 
 Adds a new actor.
 Request Body:
@@ -59,26 +59,27 @@ Request Body:
   "age": 30,
   "gender": "Male"
 }
-PATCH /actors/<actor_id>
+###PATCH /actors/<actor_id>
 
 Updates an existing actor's information.
-DELETE /actors/<actor_id>
+###DELETE /actors/<actor_id>
 
 Deletes an actor.
-Movies
-GET /movies
+##Movies
+###GET /movies
 
 Retrieves a list of movies.
-POST /movies
+###POST /movies
 
 Adds a new movie.
-PATCH /movies/<movie_id>
+###PATCH /movies/<movie_id>
 
 Updates an existing movie's information.
-DELETE /movies/<movie_id>
+###DELETE /movies/<movie_id>
 
 Deletes a movie.
-Role-Based Access Control (RBAC)
+
+##Role-Based Access Control (RBAC)
 The API implements RBAC to restrict access based on user roles. The following roles are defined:
 
 Casting Assistant: Can view actors and movies.

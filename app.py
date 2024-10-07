@@ -5,69 +5,61 @@ import os
 import requests
 from auth.auth import requires_auth
 
-
-
-
 app = Flask(__name__)
 setup_db(app)
 app.secret_key = os.environ.get("JWT_SECRET_KEY", "default_secret_key")
-print(app.secret_key)
 CORS(app)
-
 
 # CORS Headers
 @app.after_request
 def after_request(response):
-    response.headers.add(
-        "Access-Control-Allow-Headers", "Content-Type,Authorization,true"
-    )
-    response.headers.add(
-        "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
-    )
+    """Add CORS headers to the response."""
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,true")
+    response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-
-# Route to render the index page
 @app.route('/')
 def index():
+    """Render the index page."""
     return render_template('index.html', session=session.get('jwt_token'))
 
-# Define your API routes here
+# API routes
 @app.route('/actors', methods=['GET'])
 def get_actors():
+    """Retrieve all actors."""
     actors = Actor.query.all()
     return render_template('actor.html', actors=actors)
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
+    """Retrieve all movies."""
     movies = Movie.query.all()
     return render_template('movie.html', movies=movies)
 
 @app.route('/actors', methods=['POST'])
 @requires_auth('add:actor')  # Protect this route
 def add_actor(payload):
-    print(payload)
+    """Add a new actor."""
     name = request.form.get("name")
     age = request.form.get("age")
     gender = request.form.get("gender")
 
     if not name or not age or not gender:
-        abort(400)
+        abort(400)  # Bad request if any field is missing
 
     try:
         actor = Actor(name=name, age=age, gender=gender)
         actor.insert()
         return render_template('index.html')
-
     except Exception as e:
-        print(f"Error making actor: {e}")
-        abort(422)
+        print(f"Error adding actor: {e}")
+        abort(422)  # Unprocessable entity
 
-@app.route('/actors/<int:actor_id>', methods=['PATCH'])
+@app.route('/actors/<int:actor_id>', methods=['POST'])
 @requires_auth('update:actor')  # Protect this route
 def update_actor(actor_id, payload):
-    print(payload)
+    """Update an existing actor's information."""
     name = request.form.get("name")
     age = request.form.get("age")
     gender = request.form.get("gender")
@@ -91,15 +83,14 @@ def update_actor(actor_id, payload):
 
         actor.update()
         return render_template('index.html')
-
     except Exception as e:
         print(f"Error updating actor: {e}")
-        abort(422)
+        abort(422)  # Unprocessable entity
 
-@app.route('/movies/<int:movie_id>', methods=['PATCH'])
+@app.route('/movies/<int:movie_id>', methods=['POST'])
 @requires_auth('update:movie')  # Protect this route
 def update_movie(movie_id, payload):
-    print(payload)
+    """Update an existing movie's information."""
     title = request.form.get("title")
     release_date = request.form.get("release_date")
 
@@ -110,7 +101,7 @@ def update_movie(movie_id, payload):
     try:
         movie = Movie.query.get(movie_id)
         if not movie:
-            abort(404)  # Actor not found
+            abort(404)  # Movie not found
 
         # Update fields if provided
         if title:
@@ -120,61 +111,55 @@ def update_movie(movie_id, payload):
 
         movie.update()
         return render_template('index.html')
-
     except Exception as e:
-        print(f"Error updating actor: {e}")
-        abort(422)
+        print(f"Error updating movie: {e}")
+        abort(422)  # Unprocessable entity
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route
 def add_movie(payload):
-    print(payload)
+    """Add a new movie."""
     title = request.form.get("title")
     release_date = request.form.get("release_date")
 
     if not title or not release_date:
-         abort(400)
+        abort(400)  # Bad request if any field is missing
 
     try:
         movie = Movie(title=title, release_date=release_date)
         movie.insert()
         return render_template('index.html')
-
     except Exception as e:
-        print(f"Error making movie: {e}")
-        abort(422)
-
-
-
+        print(f"Error adding movie: {e}")
+        abort(422)  # Unprocessable entity
 
 @app.route('/delete-actor/<int:actor_id>', methods=['POST'])
 @requires_auth('delete:actor')  # Protect this route
 def delete_actor(payload, actor_id):
+    """Delete an actor by ID."""
     actor = Actor.query.get(actor_id)
     if not actor:
-        abort(404)
-    if actor:
-        db.session.delete(actor)
-        db.session.commit()
-    return redirect('/actors')
+        abort(404)  # Actor not found
 
+    db.session.delete(actor)
+    db.session.commit()
+    return redirect('/actors')
 
 @app.route('/delete-movie/<int:movie_id>', methods=['POST'])
 @requires_auth('delete:movie')  # Protect this route
 def delete_movie(payload, movie_id):
+    """Delete a movie by ID."""
     movie = Movie.query.get(movie_id)
     if not movie:
-        abort(404)
-    if movie:
-        db.session.delete(movie)
-        db.session.commit()
+        abort(404)  # Movie not found
+
+    db.session.delete(movie)
+    db.session.commit()
     return redirect('/movies')
-
-
-
 
 @app.route('/callback', methods=["GET", "POST"])
 def callback():
+    """Handle the callback from Auth0 after authentication."""
     code = request.args.get('code')
     token_url = f'https://{os.environ["AUTH0_DOMAIN"]}/oauth/token'
     token_payload = {
@@ -192,16 +177,16 @@ def callback():
     session['jwt_token'] = tokens.get('access_token')
     return redirect(url_for('index'))
 
-
 @app.route('/gettoken')
 def get_token():
+    """Retrieve the access token from the URL fragment."""
     token = request.args.get('#access_token')
-    print(token)
     session['jwt_token'] = token
     return redirect(url_for('index'))
 
 @app.route('/login')
 def login():
+    """Redirect to Auth0 login page."""
     return redirect(
         f"https://{os.environ['AUTH0_DOMAIN']}/authorize"
         f"?audience={os.environ['API_IDENTIFIER']}"
@@ -209,9 +194,6 @@ def login():
         f"&client_id={os.environ['AUTH0_CLIENT_ID']}"
         f"&redirect_uri={url_for('callback', _external=True)}"
     )
-
-
-
 
 # Start the application
 if __name__ == '__main__':
