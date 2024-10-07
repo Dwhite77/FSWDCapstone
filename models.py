@@ -45,7 +45,7 @@ class Movie(db.Model):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(100), nullable=False)
-    release_date = Column(Date, nullable=False)
+    release_date = Column(String(10), nullable=False)
 
 
     def long(self):
