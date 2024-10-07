@@ -154,7 +154,7 @@ def delete_actor(actor_id):
     return redirect('/actors')
 
 
-@app.route('/delete-movie/<int:movie_id>', methods=['POST'])
+@app.route('/delete-movie/<int:movie_id>', methods=['DELETE'])
 @requires_auth('delete:movie')  # Protect this route
 def delete_movie(movie_id):
     movie = Movie.query.get(movie_id)

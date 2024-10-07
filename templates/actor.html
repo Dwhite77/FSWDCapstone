@@ -15,20 +15,26 @@
                 <tr>
                     <td>{{ actor.id }}</td>
                     <td>
-                        <input type="text" id="name-{{ actor.id }}" value="{{ actor.name }}" required>
+                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
+                            <input type="text" name="name" value="{{ actor.name }}" required>
+                        </form>
                     </td>
                     <td>
-                        <input type="number" id="age-{{ actor.id }}" value="{{ actor.age }}" required>
+                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
+                            <input type="number" name="age" value="{{ actor.age }}" required>
+                        </form>
                     </td>
                     <td>
-                        <input type="text" id="gender-{{ actor.id }}" value="{{ actor.gender }}" required>
+                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
+                            <input type="text" name="gender" value="{{ actor.gender }}" required>
+                        </form>
                     </td>
                     <td>
                         <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
                             <input type="hidden" name="_method" value="PATCH">  <!-- Indicate the method -->
-                            <button type="submit" onclick="updateActor({{ actor.id }})">Update</button>
+                            <button type="submit">Update</button>
                         </form>
-                        <form action="/delete-actor/{{ actor.id }}" method="POST" style="display:inline;">
+                        <form action="/delete-actor/{{ actor.id }}" method="DELETE" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
                     </td>
@@ -40,42 +46,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <button onclick="location.href='/'" type="button">Back to Home</button>
+    <form action="/" method="GET" style="display:inline;">
+        <button type="submit">Back to Home</button>
+    </form>
 </div>
-
-<script>
-    function updateActor(actorId) {
-        // Get the values from the input fields
-        const name = document.getElementById(`name-${actorId}`).value;
-        const age = document.getElementById(`age-${actorId}`).value;
-        const gender = document.getElementById(`gender-${actorId}`).value;
-
-        // Create a form to submit the PATCH request
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/actors/${actorId}`;
-
-        // Create hidden inputs to send the updated values
-        const nameInput = document.createElement('input');
-        nameInput.type = 'hidden';
-        nameInput.name = 'name';
-        nameInput.value = name;
-        form.appendChild(nameInput);
-
-        const ageInput = document.createElement('input');
-        ageInput.type = 'hidden';
-        ageInput.name = 'age';
-        ageInput.value = age;
-        form.appendChild(ageInput);
-
-        const genderInput = document.createElement('input');
-        genderInput.type = 'hidden';
-        genderInput.name = 'gender';
-        genderInput.value = gender;
-        form.appendChild(genderInput);
-
-        // Append the form to the body and submit it
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
