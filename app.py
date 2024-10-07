@@ -56,7 +56,7 @@ def add_actor(payload):
         print(f"Error adding actor: {e}")
         abort(422)  # Unprocessable entity
 
-@app.route('/actors/<int:actor_id>', methods=['POST'])
+@app.route('/updateactors/<int:actor_id>', methods=['POST'])
 @requires_auth('update:actor')  # Protect this route
 def update_actor(actor_id, payload):
     """Update an existing actor's information."""
@@ -87,7 +87,7 @@ def update_actor(actor_id, payload):
         print(f"Error updating actor: {e}")
         abort(422)  # Unprocessable entity
 
-@app.route('/movies/<int:movie_id>', methods=['POST'])
+@app.route('/updatemovies/<int:movie_id>', methods=['POST'])
 @requires_auth('update:movie')  # Protect this route
 def update_movie(movie_id, payload):
     """Update an existing movie's information."""

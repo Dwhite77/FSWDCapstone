@@ -21,7 +21,7 @@
                         <input type="date" id="release_year-{{ movie.id }}" value="{{ movie.release_year }}" required>
                     </td>
                     <td>
-                        <form action="/movies/{{ movie.id }}" method="POST" style="display:inline;">
+                        <form action="/updatemovies/{{ movie.id }}" method="POST" style="display:inline;">
                             <input type="hidden" value="POST">  <!-- Indicate the method -->
                             <button type="button">Update</button>
                         </form>
