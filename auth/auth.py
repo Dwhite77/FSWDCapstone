@@ -20,7 +20,7 @@ class AuthError(Exception):
 
 def get_token_auth_header():
     # Attempt to get the header from the request
-    auth = request.headers.get('permissions', None)
+    auth = request.args.get('access_token')
     print(auth)
 
     if not auth:
@@ -32,6 +32,7 @@ def get_token_auth_header():
 
     # Split the header into parts
     parts = auth.split()
+    print(parts)
     if parts[0].lower() != 'bearer':
         raise AuthError({
             'code': 'invalid_header',

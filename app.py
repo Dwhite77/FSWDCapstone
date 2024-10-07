@@ -129,6 +129,7 @@ def update_movie(payload,id):
 
 @app.route('/callback')
 def callback():
+    auth = request.args.get('access_token')
     return redirect(url_for('index'))
 
 
