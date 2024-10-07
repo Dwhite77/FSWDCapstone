@@ -6,12 +6,11 @@ from auth.auth import requires_auth
 
 
 
+
 app = Flask(__name__)
 setup_db(app)
 app.secret_key = os.environ.get("JWT_SECRET_KEY", "default_secret_key")
 print(app.secret_key)
-
-
 CORS(app)
 
 
@@ -30,7 +29,7 @@ def after_request(response):
 # Route to render the index page
 @app.route('/')
 def index():
-    return render_template('index.html')  # Ensure index.html is in the templates folder
+    return render_template('index.html', session=session.get('jwt_token'))
 
 # Define your API routes here
 @app.route('/actors', methods=['GET'])
@@ -130,7 +129,7 @@ def update_movie(id):
 
 
 
-@app.route('/callback')
+@app.route('/callback' , methods=["GET", "POST"])
 def callback():
     # Extract the token from the URL fragment
     token = request.args.get('access_token')
@@ -143,7 +142,7 @@ def callback():
 
 @app.route('/gettoken')
 def get_token():
-    token = request.args.get('access_token')
+    token = request.args.get('#access_token')
     print(token)
     return redirect(url_for('index'))
 
