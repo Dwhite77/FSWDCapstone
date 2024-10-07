@@ -1,6 +1,6 @@
 import os
 import json
-from flask import request, _request_ctx_stack
+from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
@@ -28,7 +28,7 @@ def get_token_auth_header():
             'code': 'authorization_header_missing',
             'description': 'Authorization header is expected.'
         }, 401)
-        
+
 
     # Split the header into parts
     parts = auth.split()
@@ -146,10 +146,12 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
             jwt = get_token_auth_header()
-            payload = verify_decode_jwt(jwt)
+            try:
+                payload = verify_decode_jwt(jwt)
+            except:
+                abort(401)
+
             check_permissions(permission, payload)
-            return f( *args, payload=payload, **kwargs)
-
+            return f(payload, *args, **kwargs)
         return wrapper
-
     return requires_auth_decorator

@@ -43,7 +43,7 @@ def get_movies():
     return render_template('movie.html', movies=movies)
 
 @app.route('/actors', methods=['POST'])
-# @requires_auth('add:actor')  # Protect this route
+@requires_auth('add:actor')  # Protect this route
 def add_actor():
     name = request.form.get("name")
     age = request.form.get("age")
@@ -127,9 +127,14 @@ def update_movie(payload,id):
     return jsonify({'message': 'Movie not found'}), 404
 
 
+@app.route('/callback')
+def callback():
+    return redirect(url_for('index'))
+
+
 @app.route('/login')
 def login():
-    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?audience={os.environ['API_IDENTIFIER']}&response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('/', _external=True)}")
+    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?audience={os.environ['API_IDENTIFIER']}&response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('callback', _external=True)}")
 
 
 # Start the application
