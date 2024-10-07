@@ -83,7 +83,7 @@ class Actor(db.Model):
     def long(self):
         return {
             'id': self.id,
-            'name': self.title,
+            'name': self.name,
             'age': self.age,
             'gender': self.gender
         }
