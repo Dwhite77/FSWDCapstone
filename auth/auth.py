@@ -20,8 +20,8 @@ class AuthError(Exception):
 
 
 def get_token_auth_header():
-    auth_header = session.get('jwt_token')
-    #auth_header = request.headers.get('Authorization')
+    #auth_header = session.get('jwt_token')
+    auth_header = request.headers.get('Authorization')
     if auth_header:
         # Split the header to get the token
         parts = auth_header.split()

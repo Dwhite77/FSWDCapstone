@@ -5,11 +5,11 @@ import os
 from auth.auth import requires_auth
 
 
-print("app")
+
 app = Flask(__name__)
 setup_db(app)
 app.secret_key = os.environ.get("JWT_SECRET_KEY", "default_secret_key")
-print("appsetup")
+print(app.secret_key)
 
 
 CORS(app)
@@ -104,7 +104,7 @@ def delete_movie(movie_id):
 
 @app.route('/actors/<int:id>', methods=['PATCH'])
 @requires_auth('update:actor')  # Protect this route
-def update_actor(payload,id):
+def update_actor(id):
     actor = Actor.query.get(id)
     if actor:
         data = request.get_json()
@@ -117,7 +117,7 @@ def update_actor(payload,id):
 
 @app.route('/movies/<int:id>', methods=['PATCH'])
 @requires_auth('update:movie')  # Protect this route
-def update_movie(payload,id):
+def update_movie(id):
     movie = Movie.query.get(id)
     if movie:
         data = request.get_json()
@@ -128,13 +128,6 @@ def update_movie(payload,id):
     return jsonify({'message': 'Movie not found'}), 404
 
 
-@app.route('/dashboard')
-def dashboard():
-    token = session.get('jwt_token')
-    if token:
-        # You can now use the token to make authenticated requests
-        return f'Token: {token}'
-    return 'No token found. Please log in.'
 
 @app.route('/callback')
 def callback():
@@ -146,6 +139,12 @@ def callback():
     print(session.get('jwt_token'))
     return redirect(url_for('index'))  # Redirect to a protected route
 
+
+@app.route('/gettoken')
+def get_token():
+    token = request.args.get('access_token')
+    print(token)
+    return redirect(url_for('index'))
 
 @app.route('/login')
 def login():
