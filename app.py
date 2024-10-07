@@ -63,11 +63,71 @@ def add_actor(payload):
         print(f"Error making actor: {e}")
         abort(422)
 
+@app.route('/actors/<int:actor_id>', methods=['PATCH'])
+@requires_auth('update:actor')  # Protect this route
+def update_actor(actor_id, payload):
+    print(payload)
+    name = request.form.get("name")
+    age = request.form.get("age")
+    gender = request.form.get("gender")
+
+    # Validate input
+    if not name and not age and not gender:
+        abort(400)  # At least one field must be provided
+
+    try:
+        actor = Actor.query.get(actor_id)
+        if not actor:
+            abort(404)  # Actor not found
+
+        # Update fields if provided
+        if name:
+            actor.name = name
+        if age:
+            actor.age = age
+        if gender:
+            actor.gender = gender
+
+        actor.update()
+        return render_template('index.html')
+
+    except Exception as e:
+        print(f"Error updating actor: {e}")
+        abort(422)
+
+@app.route('/movies/<int:movie_id>', methods=['PATCH'])
+@requires_auth('update:movie')  # Protect this route
+def update_movie(movie_id, payload):
+    print(payload)
+    title = request.form.get("title")
+    release_date = request.form.get("release_date")
+
+    # Validate input
+    if not title and not release_date:
+        abort(400)  # At least one field must be provided
+
+    try:
+        movie = Movie.query.get(movie_id)
+        if not movie:
+            abort(404)  # Actor not found
+
+        # Update fields if provided
+        if title:
+            movie.title = title
+        if release_date:
+            movie.release_date = release_date
+
+        movie.update()
+        return render_template('index.html')
+
+    except Exception as e:
+        print(f"Error updating actor: {e}")
+        abort(422)
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route
-def add_movie():
-
+def add_movie(payload):
+    print(payload)
     title = request.form.get("title")
     release_date = request.form.get("release_date")
 
@@ -85,7 +145,7 @@ def add_movie():
 
 
 @app.route('/delete-actor/<int:actor_id>', methods=['POST'])
-#@requires_auth('delete:actor')  # Protect this route
+@requires_auth('delete:actor')  # Protect this route
 def delete_actor(actor_id):
     actor = Actor.query.get(actor_id)
     if actor:
@@ -95,7 +155,7 @@ def delete_actor(actor_id):
 
 
 @app.route('/delete-movie/<int:movie_id>', methods=['POST'])
-#@requires_auth('delete:movie')  # Protect this route
+@requires_auth('delete:movie')  # Protect this route
 def delete_movie(movie_id):
     movie = Movie.query.get(movie_id)
     if movie:
@@ -103,30 +163,6 @@ def delete_movie(movie_id):
         db.session.commit()
     return redirect('/movies')
 
-@app.route('/actors/<int:id>', methods=['PATCH'])
-@requires_auth('update:actor')  # Protect this route
-def update_actor(id):
-    actor = Actor.query.get(id)
-    if actor:
-        data = request.get_json()
-        actor.name = data.get('name', actor.name)
-        actor.age = data.get('age', actor.age)
-        actor.gender = data.get('gender', actor.gender)
-        db.session.commit()
-        return jsonify({'message': 'Actor updated'}), 200
-    return jsonify({'message': 'Actor not found'}), 404
-
-@app.route('/movies/<int:id>', methods=['PATCH'])
-@requires_auth('update:movie')  # Protect this route
-def update_movie(id):
-    movie = Movie.query.get(id)
-    if movie:
-        data = request.get_json()
-        movie.title = data.get('title', movie.title)
-        movie.release_date = data.get('release_date', movie.release_date)
-        db.session.commit()
-        return jsonify({'message': 'Movie updated'}), 200
-    return jsonify({'message': 'Movie not found'}), 404
 
 
 
@@ -166,6 +202,8 @@ def login():
         f"&client_id={os.environ['AUTH0_CLIENT_ID']}"
         f"&redirect_uri={url_for('callback', _external=True)}"
     )
+
+
 
 
 # Start the application

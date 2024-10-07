@@ -14,10 +14,20 @@
             {% for actor in actors %}
                 <tr>
                     <td>{{ actor.id }}</td>
-                    <td>{{ actor.name }}</td>
-                    <td>{{ actor.age }}</td>
-                    <td>{{ actor.gender }}</td>
                     <td>
+                        <input type="text" id="name-{{ actor.id }}" value="{{ actor.name }}" required>
+                    </td>
+                    <td>
+                        <input type="number" id="age-{{ actor.id }}" value="{{ actor.age }}" required>
+                    </td>
+                    <td>
+                        <input type="text" id="gender-{{ actor.id }}" value="{{ actor.gender }}" required>
+                    </td>
+                    <td>
+                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="_method" value="PATCH">  <!-- Indicate the method -->
+                            <button type="submit" onclick="updateActor({{ actor.id }})">Update</button>
+                        </form>
                         <form action="/delete-actor/{{ actor.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
@@ -32,3 +42,40 @@
     </table>
     <button onclick="location.href='/'" type="button">Back to Home</button>
 </div>
+
+<script>
+    function updateActor(actorId) {
+        // Get the values from the input fields
+        const name = document.getElementById(`name-${actorId}`).value;
+        const age = document.getElementById(`age-${actorId}`).value;
+        const gender = document.getElementById(`gender-${actorId}`).value;
+
+        // Create a form to submit the PATCH request
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/actors/${actorId}`;
+
+        // Create hidden inputs to send the updated values
+        const nameInput = document.createElement('input');
+        nameInput.type = 'hidden';
+        nameInput.name = 'name';
+        nameInput.value = name;
+        form.appendChild(nameInput);
+
+        const ageInput = document.createElement('input');
+        ageInput.type = 'hidden';
+        ageInput.name = 'age';
+        ageInput.value = age;
+        form.appendChild(ageInput);
+
+        const genderInput = document.createElement('input');
+        genderInput.type = 'hidden';
+        genderInput.name = 'gender';
+        genderInput.value = gender;
+        form.appendChild(genderInput);
+
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
