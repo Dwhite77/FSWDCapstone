@@ -28,6 +28,7 @@ def get_token_auth_header():
             'code': 'authorization_header_missing',
             'description': 'Authorization header is expected.'
         }, 401)
+        
 
     # Split the header into parts
     parts = auth.split()

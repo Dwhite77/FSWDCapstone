@@ -35,12 +35,12 @@ def index():
 @app.route('/actors', methods=['GET'])
 def get_actors():
     actors = Actor.query.all()
-    return jsonify([actor.name for actor in actors])
+    return render_template('actor.html', actors=actors)
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
     movies = Movie.query.all()
-    return jsonify([movie.title for movie in movies])
+    return render_template('movie.html', movies=movies)
 
 @app.route('/actors', methods=['POST'])
 # @requires_auth('add:actor')  # Protect this route
