@@ -138,13 +138,15 @@ def add_movie(payload):
         movie = Movie(title=title, release_date=release_date)
         movie.insert()
         return render_template('index.html')
+
     except Exception as e:
         print(f"Error making movie: {e}")
         abort(422)
 
 
 
-@app.route('/delete-actor/<int:actor_id>', methods=['POST'])
+
+@app.route('/delete-actor/<int:actor_id>', methods=['DELETE'])
 @requires_auth('delete:actor')  # Protect this route
 def delete_actor(actor_id):
     actor = Actor.query.get(actor_id)
