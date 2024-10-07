@@ -1,5 +1,8 @@
 <div class="container">
     <h1>List of Actors</h1>
+
+    <!-- Section to display current actors -->
+    <h2>Current Actors</h2>
     <table>
         <thead>
             <tr>
@@ -14,25 +17,10 @@
             {% for actor in actors %}
                 <tr>
                     <td>{{ actor.id }}</td>
+                    <td>{{ actor.name }}</td>
+                    <td>{{ actor.age }}</td>
+                    <td>{{ actor.gender }}</td>
                     <td>
-                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
-                            <input type="text" name="name" value="{{ actor.name }}" required>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
-                            <input type="number" name="age" value="{{ actor.age }}" required>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/actors/{{ actor.id }}" method="POST" style="display:inline;">
-                            <input type="text" name="gender" value="{{ actor.gender }}" required>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/updateactors/{{ actor.id }}" method="POST" style="display:inline;">
-                            <button type="submit">Update</button>
-                        </form>
                         <form action="/delete-actor/{{ actor.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
@@ -45,6 +33,25 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Section to update actor information -->
+    <h2>Update Actor Information</h2>
+    <form action="/update-actor" method="POST">
+        <label for="actor_id">ID:</label>
+        <input type="number" name="actor_id" required>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" required>
+
+        <label for="gender">Gender:</label>
+        <input type="text" name="gender" required>
+
+        <button type="submit">Update Actor</button>
+    </form>
+
     <form action="/" method="GET" style="display:inline;">
         <button type="submit">Back to Home</button>
     </form>

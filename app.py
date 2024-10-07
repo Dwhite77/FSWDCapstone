@@ -56,33 +56,30 @@ def add_actor(payload):
         print(f"Error adding actor: {e}")
         abort(422)  # Unprocessable entity
 
-@app.route('/updateactors/<int:actor_id>', methods=['POST'])
-@requires_auth('update:actor')  # Protect this route
-def update_actor(actor_id, payload):
-    """Update an existing actor's information."""
-    name = request.form.get("name")
-    age = request.form.get("age")
-    gender = request.form.get("gender")
+@app.route('/update-actor', methods=['POST'])
+def update_actor():
+    id = request.form.get('id')
+    name = request.form.get('name')
+    age = request.form.get('age')
+    gender = request.form.get('gender')
 
     # Validate input
-    if not name and not age and not gender:
-        abort(400)  # At least one field must be provided
+    if not id or not name or not age or not gender:
+        abort(400)  # Bad request if any field is missing
 
     try:
-        actor = Actor.query.get(actor_id)
+        actor = Actor.query.get(id)
         if not actor:
             abort(404)  # Actor not found
 
-        # Update fields if provided
-        if name:
-            actor.name = name
-        if age:
-            actor.age = age
-        if gender:
-            actor.gender = gender
+        # Update fields
+        actor.name = name
+        actor.age = age
+        actor.gender = gender
 
-        actor.update()
-        return render_template('index.html')
+        # Commit changes to the database
+        db.session.commit()
+        return redirect('/actors')  # Redirect back to the actors list
     except Exception as e:
         print(f"Error updating actor: {e}")
         abort(422)  # Unprocessable entity
