@@ -87,7 +87,7 @@ def update_actor(payload):
 
 @app.route('/update-movie', methods=['POST'])
 @requires_auth('update:movie')  # Protect this route
-def update_movie():
+def update_movie(payload):
     """Update an existing movie's information."""
     id=request.form.get('id')
     title = request.form.get('title')
