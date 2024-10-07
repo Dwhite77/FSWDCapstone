@@ -8,6 +8,7 @@ from auth.auth import requires_auth
 print("app")
 app = Flask(__name__)
 setup_db(app)
+app.secret_key = os.environ.get("JWT_SECRET_KEY", "default_secret_key")
 print("appsetup")
 
 
