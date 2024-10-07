@@ -149,7 +149,7 @@ def add_movie(payload):
 
 @app.route('/delete-actor/<int:actor_id>', methods=['POST'])
 @requires_auth('delete:actor')  # Protect this route
-def delete_actor(actor_id):
+def delete_actor(payload, actor_id):
     actor = Actor.query.get(actor_id)
     if not actor:
         abort(404)
@@ -161,7 +161,7 @@ def delete_actor(actor_id):
 
 @app.route('/delete-movie/<int:movie_id>', methods=['POST'])
 @requires_auth('delete:movie')  # Protect this route
-def delete_movie(movie_id):
+def delete_movie(payload, movie_id):
     movie = Movie.query.get(movie_id)
     if not movie:
         abort(404)
