@@ -89,9 +89,9 @@ def update_actor():
 @requires_auth('update:movie')  # Protect this route
 def update_movie():
     """Update an existing movie's information."""
-    id=request.form.get("id")
-    title = request.form.get("title")
-    release_date = request.form.get("release_date")
+    id=request.form.get('id')
+    title = request.form.get('title')
+    release_date = request.form.get('release_date')
 
     # Validate input
     if not id or not title and not release_date:
