@@ -147,7 +147,7 @@ def add_movie(payload):
 
 
 
-@app.route('/delete-actor/<int:actor_id>', methods=['DELETE'])
+@app.route('/actors/delete-actor/<int:actor_id>', methods=['DELETE'])
 @requires_auth('delete:actor')  # Protect this route
 def delete_actor(actor_id):
     actor = Actor.query.get(actor_id)
@@ -159,7 +159,7 @@ def delete_actor(actor_id):
     return redirect('/actors')
 
 
-@app.route('/delete-movie/<int:movie_id>', methods=['DELETE'])
+@app.route('/movies/delete-movie/<int:movie_id>', methods=['DELETE'])
 @requires_auth('delete:movie')  # Protect this route
 def delete_movie(movie_id):
     movie = Movie.query.get(movie_id)
