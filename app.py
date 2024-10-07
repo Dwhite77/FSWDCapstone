@@ -58,7 +58,7 @@ def add_actor(payload):
 
 @app.route('/update-actor', methods=['POST'])
 @requires_auth('update:actor')
-def update_actor():
+def update_actor(payload):
     id = request.form.get('id')
     name = request.form.get('name')
     age = request.form.get('age')

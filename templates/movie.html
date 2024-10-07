@@ -8,7 +8,7 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
-                <th>Release Year</th>
+                <th>Release Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -17,7 +17,7 @@
                 <tr>
                     <td>{{ movie.id }}</td>
                     <td>{{ movie.title }}</td>
-                    <td>{{ movie.release_year }}</td>
+                    <td>{{ movie.release_date }}</td>
                     <td>
                         <form action="/delete-movie/{{ movie.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
@@ -41,8 +41,8 @@
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
 
-        <label for="release_year">Release Year:</label>
-        <input type="text" id="release_year" name="release_year" required>
+        <label for="release_date">Release Year:</label>
+        <input type="text" id="release_date" name="release_date" required>
 
 
         <button type="submit">Update Movie</button>
