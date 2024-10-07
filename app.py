@@ -55,10 +55,8 @@ def add_actor():
     try:
         actor = Actor(name=name, age=age, gender=gender)
         actor.insert()
-        return jsonify({
-            "success": True,
-            "actors": [actor.long()]
-        }), 200
+        return render_template('index.html')
+
     except Exception as e:
         print(f"Error making actor: {e}")
         abort(422)
@@ -66,12 +64,21 @@ def add_actor():
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('add:movie')  # Protect this route
-def add_movie(payload):
-    data = request.get_json()
-    new_movie = Movie(title=data['title'], release_date=data['release_date'])
-    db.session.add(new_movie)
-    db.session.commit()
-    return jsonify({'message': 'Movie added'}), 201
+def add_movie():
+
+    title = request.form.get("title")
+    release_date = request.form.get("release_date")
+
+    if not title or release_date:
+         abort(400)
+
+    try:
+        movie = Movie(title=title, release_date=release_date)
+        movie.insert()
+        return render_template('index.html')
+    except Exception as e:
+        print(f"Error making movie: {e}")
+        abort(422)
 
 @app.route('/actors/<int:id>', methods=['DELETE'])
 @requires_auth('delete:actor')  # Protect this route
