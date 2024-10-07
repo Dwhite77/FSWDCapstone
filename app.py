@@ -127,10 +127,23 @@ def update_movie(payload,id):
     return jsonify({'message': 'Movie not found'}), 404
 
 
+@app.route('/dashboard')
+def dashboard():
+    token = session.get('jwt_token')
+    if token:
+        # You can now use the token to make authenticated requests
+        return f'Token: {token}'
+    return 'No token found. Please log in.'
+
 @app.route('/callback')
 def callback():
-    auth = request.args.get('access_token')
-    return redirect(url_for('index'))
+    # Extract the token from the URL fragment
+    token = request.args.get('access_token')
+    print(token)
+    # Store the token in the session or use it directly
+    session['jwt_token'] = token
+    print(session.get('jwt_token'))
+    return redirect(url_for('index'))  # Redirect to a protected route
 
 
 @app.route('/login')

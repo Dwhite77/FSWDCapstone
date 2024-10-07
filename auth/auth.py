@@ -1,6 +1,6 @@
 import os
 import json
-from flask import request, _request_ctx_stack, abort
+from flask import request, _request_ctx_stack, abort, session
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
@@ -18,39 +18,16 @@ class AuthError(Exception):
         self.status_code = status_code
 
 
+
 def get_token_auth_header():
-    # Attempt to get the header from the request
-    auth = request.args.get('access_token')
-    print(auth)
-
-    if not auth:
-        raise AuthError({
-            'code': 'authorization_header_missing',
-            'description': 'Authorization header is expected.'
-        }, 401)
-
-
-    # Split the header into parts
-    parts = auth.split()
-    print(parts)
-    if parts[0].lower() != 'bearer':
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Authorization header must start with Bearer.'
-        }, 401)
-    elif len(parts) == 1:
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Token not found.'
-        }, 401)
-    elif len(parts) > 2:
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Authorization header must be a single token.'
-        }, 401)
-
-    token = parts[1]
-    return token
+    auth_header = session.get('jwt_token')
+    #auth_header = request.headers.get('Authorization')
+    if auth_header:
+        # Split the header to get the token
+        parts = auth_header.split()
+        if len(parts) == 2 and parts[0] == 'Bearer':
+            return parts[1]  # Return the token
+    return None  # Return None if no token found
 
 
 def check_permissions(permission, payload):
