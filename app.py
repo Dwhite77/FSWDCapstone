@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, render_template, redirect, session, u
 from models import db, Movie, Actor, setup_db
 from flask_cors import CORS
 import os
+import requests
 from auth.auth import requires_auth
 
 
@@ -129,26 +130,42 @@ def update_movie(id):
 
 
 
-@app.route('/callback' , methods=["GET", "POST"])
+@app.route('/callback', methods=["GET", "POST"])
 def callback():
-    # Extract the token from the URL fragment
-    token = request.args.get('access_token')
-    print(token)
-    # Store the token in the session or use it directly
-    session['jwt_token'] = token
-    print(session.get('jwt_token'))
-    return redirect(url_for('index'))  # Redirect to a protected route
+    code = request.args.get('code')
+    token_url = f'https://{os.environ["AUTH0_DOMAIN"]}/oauth/token'
+    token_payload = {
+        'grant_type': 'authorization_code',
+        'client_id': os.environ['AUTH0_CLIENT_ID'],
+        'client_secret': os.environ['AUTH0_CLIENT_SECRET'],
+        'code': code,
+        'redirect_uri': url_for('callback', _external=True)
+    }
+    token_headers = {'Content-Type': 'application/json'}
+    token_response = requests.post(token_url, json=token_payload, headers=token_headers)
+    tokens = token_response.json()
+
+    # Store the access token in the session
+    session['jwt_token'] = tokens.get('access_token')
+    return redirect(url_for('index'))
 
 
 @app.route('/gettoken')
 def get_token():
     token = request.args.get('#access_token')
     print(token)
+    session['jwt_token'] = token
     return redirect(url_for('index'))
 
 @app.route('/login')
 def login():
-    return redirect(f"https://{os.environ['AUTH0_DOMAIN']}/authorize?audience={os.environ['API_IDENTIFIER']}&response_type=token&client_id={os.environ['AUTH0_CLIENT_ID']}&redirect_uri={url_for('callback', _external=True)}")
+    return redirect(
+        f"https://{os.environ['AUTH0_DOMAIN']}/authorize"
+        f"?audience={os.environ['API_IDENTIFIER']}"
+        f"&response_type=code"
+        f"&client_id={os.environ['AUTH0_CLIENT_ID']}"
+        f"&redirect_uri={url_for('callback', _external=True)}"
+    )
 
 
 # Start the application

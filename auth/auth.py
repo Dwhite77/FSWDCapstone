@@ -1,6 +1,6 @@
 import os
 import json
-from flask import request, _request_ctx_stack, abort, session
+from flask import request, _request_ctx_stack, abort, session, jsonify
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
@@ -18,17 +18,25 @@ class AuthError(Exception):
         self.status_code = status_code
 
 
-
 def get_token_auth_header():
-    #auth_header = session.get('jwt_token')
-    auth_header = request.headers.get('Location')
-    
+    auth_header = request.headers.get('Authorization')
+
     if auth_header:
-        # Split the header to get the token
         parts = auth_header.split()
-        if len(parts) == 2 and parts[0] == 'Bearer':
-            return parts[1]  # Return the token
-    return None  # Return None if no token found
+        if len(parts) == 2 and parts[0].lower() == 'bearer':
+            return parts[1]
+        else:
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Authorization header must be in the format Bearer token.'
+            }, 401)
+    elif session.get('jwt_token'):
+        return session.get('jwt_token')
+    else:
+        raise AuthError({
+            'code': 'authorization_header_missing',
+            'description': 'Authorization header is expected.'
+        }, 401)
 
 
 def check_permissions(permission, payload):
@@ -124,13 +132,18 @@ def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            jwt = get_token_auth_header()
             try:
-                payload = verify_decode_jwt(jwt)
-            except:
+                token = get_token_auth_header()
+                payload = verify_decode_jwt(token)
+                check_permissions(permission, payload)
+            except AuthError as err:
+                return jsonify({
+                    'success': False,
+                    'error': err.status_code,
+                    'message': err.error['description']
+                }), err.status_code
+            except Exception as e:
                 abort(401)
-
-            check_permissions(permission, payload)
             return f(payload, *args, **kwargs)
         return wrapper
     return requires_auth_decorator
