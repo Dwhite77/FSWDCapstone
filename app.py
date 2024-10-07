@@ -57,6 +57,7 @@ def add_actor(payload):
         abort(422)  # Unprocessable entity
 
 @app.route('/update-actor', methods=['POST'])
+@requires_auth('update:actor')
 def update_actor():
     id = request.form.get('id')
     name = request.form.get('name')
@@ -84,29 +85,29 @@ def update_actor():
         print(f"Error updating actor: {e}")
         abort(422)  # Unprocessable entity
 
-@app.route('/updatemovies/<int:movie_id>', methods=['POST'])
+@app.route('/update-movie', methods=['POST'])
 @requires_auth('update:movie')  # Protect this route
-def update_movie(movie_id, payload):
+def update_movie():
     """Update an existing movie's information."""
+    id=request.form.get("id")
     title = request.form.get("title")
     release_date = request.form.get("release_date")
 
     # Validate input
-    if not title and not release_date:
+    if not id or not title and not release_date:
         abort(400)  # At least one field must be provided
 
     try:
-        movie = Movie.query.get(movie_id)
+        movie = Movie.query.get(id)
         if not movie:
             abort(404)  # Movie not found
 
         # Update fields if provided
-        if title:
+
             movie.title = title
-        if release_date:
             movie.release_date = release_date
 
-        movie.update()
+        db.session.commit()
         return render_template('index.html')
     except Exception as e:
         print(f"Error updating movie: {e}")

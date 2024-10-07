@@ -1,12 +1,14 @@
 <div class="container">
     <h1>List of Movies</h1>
+
+    <!-- Section to display current movies -->
+    <h2>Current Movies</h2>
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
                 <th>Release Year</th>
-                <th>Director</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -14,20 +16,9 @@
             {% for movie in movies %}
                 <tr>
                     <td>{{ movie.id }}</td>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.release_year }}</td>
                     <td>
-                        <form action="/updatemovies/{{ movie.id }}" method="POST" style="display:inline;">
-                            <input type="text" name="title" value="{{ movie.title }}" required>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/updatemovies/{{ movie.id }}" method="POST" style="display:inline;">
-                            <input type="date" name="release_year" value="{{ movie.release_year }}" required>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/updatemovies/{{ movie.id }}" method="POST" style="display:inline;">
-                            <button type="submit">Update</button>
-                        </form>
                         <form action="/delete-movie/{{ movie.id }}" method="POST" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
@@ -40,5 +31,24 @@
             {% endfor %}
         </tbody>
     </table>
-    <button onclick="location.href='/'" type="button">Back to Home</button>
+
+    <!-- Section to update movie information -->
+    <h2>Update Movie Information</h2>
+    <form action="/update-movie" method="POST">
+        <label for="id">ID:</label>
+        <input type="number" id="id" name="id" required>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="release_year">Release Year:</label>
+        <input type="date" id="release_year" name="release_year" required>
+
+
+        <button type="submit">Update Movie</button>
+    </form>
+
+    <form action="/" method="GET" style="display:inline;">
+        <button type="submit">Back to Home</button>
+    </form>
 </div>
