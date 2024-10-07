@@ -80,25 +80,26 @@ def add_movie():
         print(f"Error making movie: {e}")
         abort(422)
 
-@app.route('/actors/<int:id>', methods=['DELETE'])
-@requires_auth('delete:actor')  # Protect this route
-def delete_actor(payload,id):
-    actor = Actor.query.get(id)
+
+
+@app.route('/delete-actor/<int:actor_id>', methods=['POST'])
+#@requires_auth('delete:actor')  # Protect this route
+def delete_actor(actor_id):
+    actor = Actor.query.get(actor_id)
     if actor:
         db.session.delete(actor)
         db.session.commit()
-        return jsonify({'message': 'Actor deleted'}), 200
-    return jsonify({'message': 'Actor not found'}), 404
+    return redirect('/actors')
 
-@app.route('/movies/<int:id>', methods=['DELETE'])
-@requires_auth('delete:movie')  # Protect this route
-def delete_movie(payload,id):
-    movie = Movie.query.get(id)
+
+@app.route('/delete-movie/<int:movie_id>', methods=['POST'])
+#@requires_auth('delete:movie')  # Protect this route
+def delete_movie(movie_id):
+    movie = Movie.query.get(movie_id)
     if movie:
         db.session.delete(movie)
         db.session.commit()
-        return jsonify({'message': 'Movie deleted'}), 200
-    return jsonify({'message': 'Movie not found'}), 404
+    return redirect('/movies')
 
 @app.route('/actors/<int:id>', methods=['PATCH'])
 @requires_auth('update:actor')  # Protect this route
