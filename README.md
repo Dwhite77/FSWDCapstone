@@ -17,27 +17,19 @@ The goal of this project is to build a robust API that can be used by a casting 
 - SQLAlchemy
 - Auth0 account for authentication
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Dwhite77/FSWDCapstone.git
-   cd casting-agency
-Install the required packages:
-
-pip install -r requirements.txt
-Set up the database:
-
-Create a new database in your preferred SQL database management system.
-Update the database connection string in config.py.
-Set up environment variables for Auth0: Create a .env file and add the following:
+##No installation required this should just work at the url
+So long as it has been deployed on render
 
 AUTH0_DOMAIN='dev-n2b3c216vvhww5je.us.auth0.com'
+
 API_IDENTIFIER='Capstone'
+
 AUTH0_CLIENT_ID='jkplYa7wJNDYAkCB82RqdErnjRR7Naex'
+
 AUTH0_CLIENT_SECRET='QZWoaiHxC46zqOR_O3jYvt3Cw5kqJXXtdojr18NTafQqoakky5T9TYvDJP2j_ZhE'
 
 
-Authentication
+###Authentication
 To access the API, you need to obtain a JWT token from Auth0. Follow these steps:
 
 Log in to your Auth0 dashboard.
