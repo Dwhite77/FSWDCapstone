@@ -18,7 +18,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         }
 
         self.auth_header = {
-            'Authorization': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjRWQjBmdkRLcUNfLS1CampYbU1QcCJ9.eyJpc3MiOiJodHRwczovL2Rldi1uMmIzYzIxNnZ2aHd3NWplLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NmZmZGNlMzg2MTg3M2JkNjcwN2MyZWMiLCJhdWQiOiJDYXBzdG9uZSIsImlhdCI6MTcyODMwMjA1MSwiZXhwIjoxNzI4MzA5MjUxLCJzY29wZSI6IiIsImF6cCI6ImprcGxZYTd3Sk5EWUFrQ0I4MlJxZEVybmpSUjdOYWV4IiwicGVybWlzc2lvbnMiOlsiYWRkOmFjdG9yIiwiYWRkOm1vdmllIiwiZGVsZXRlOmFjdG9yIiwiZGVsZXRlOm1vdmllIiwidXBkYXRlOmFjdG9yIiwidXBkYXRlOm1vdmllIl19.ay52h519dCPAUxCdl7VsdKOumLF0M6GAhZO0Z7qOq72Alxf9crVZ5cw1LQYWquNMhDvj9dvPxv7KbnBgy3_VWyzyXCk5p1UI-_S8V0XkdjfMPHdn7JxdDKXW8fPCh0geYyYJQBzbjmFm-xYWWqf-X71EHQ6tUU2raWsJOFnfdtn_qTKlxZx52bQG_372GSzZv9Gk-ElQj3EThewn33al7drf9w605oGAeoG_C6g27Po_zJo1sEO8iIr0xK4nrh2SLneEjfaZ3SR5LiDnpbrnWoYiYxsCMuHK_8riM8tGI54KRZ_NaZMEZyOBsZAEQ8yAha4lboKshnuiGKc1AKGRtQ&expires_in=7200&token_type=Bearer'  # Replace with a valid token for testing
         }
 
     def test_get_actors(self):
